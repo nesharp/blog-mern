@@ -6,7 +6,7 @@ import { registerValidation } from './validations/auth.js'
 import { validationResult } from 'express-validator'
 import UserModel from './models/User.js'
 import bcrypt from 'bcrypt'
-
+import checkAuth from './utils/checkAuth.js'
 //db connection
 mongoose
 	.connect(
@@ -76,11 +76,15 @@ app.post('/auth/login', async (req, res) => {
 	}
 })
 //get user
-app.get('/users/me', async (req, res) => {
+app.get('/users/me', checkAuth, async (req, res) => {
 	try {
-		const { token } = req.body
-		const { _id } = jwt.verify(token, 'secret123')
-		const user = await UserModel.findOne({ _id })
+		const { userId } = req
+		const {_doc:user} = await UserModel.findById(userId)
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' })
+		}
+		const { passwordHash, __v, ...userData } = user
+		return res.json(userData)
 	} catch (error) {
 		res.status(500).json({ message: 'Can`t get user' })
 		console.log(error)
