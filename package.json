@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "concurrently \"npm run dev\" \"cd client-app && npm start\""
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
