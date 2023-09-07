@@ -1,6 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import mongoose from 'mongoose'
+import cors from 'cors'
 import { checkAuth, handleErrors } from './utils/index.js'
 import { UserController, PostController } from './controllers/index.js'
 import {
@@ -15,6 +16,7 @@ mongoose
 	)
 	.then(() => console.log('MongoDB connected'))
 	.catch(error => console.log(error))
+
 //app config
 const app = express()
 const storage = multer.diskStorage({
@@ -28,6 +30,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 app.use(express.json())
+app.use(cors({
+	origin: 'http://localhost:3000',
+}))
 app.use('/uploads', express.static('uploads'))
 //---------------------------------------routes---------------------------------------
 // register
@@ -72,5 +77,5 @@ app.listen(4200, error => {
 	if (error) {
 		return console.log(error)
 	}
-	console.log('Server is running on port', process.env.PORT || 3000)
+	console.log('Server is running on port', process.env.PORT || 4200)
 })
