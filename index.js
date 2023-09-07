@@ -1,7 +1,6 @@
 import express from 'express'
 import multer from 'multer'
 import mongoose from 'mongoose'
-import cors from 'cors'
 import { checkAuth, handleErrors } from './utils/index.js'
 import { UserController, PostController } from './controllers/index.js'
 import {
