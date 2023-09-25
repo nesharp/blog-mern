@@ -65,10 +65,8 @@ app.get('/users/me', checkAuth, UserController.getMyProfile)
 //create post
 app.post(
 	'/posts',
+
 	checkAuth,
-	(req, res) => {
-		console.log(req)
-	},
 	createPostValidation,
 	handleErrors,
 	PostController.CreatePost
