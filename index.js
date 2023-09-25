@@ -28,9 +28,17 @@ const storage = multer.diskStorage({
 	}
 })
 const upload = multer({ storage })
-
 app.use(express.json())
+// cors
 app.use(cors())
+app.options('*', cors())
+var allowCrossDomain = function(req,res,next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();  
+}
+app.use(allowCrossDomain);
 app.use('/uploads', express.static('uploads'))
 //---------------------------------------routes---------------------------------------
 // register
@@ -48,6 +56,9 @@ app.get('/users/me', checkAuth, UserController.getMyProfile)
 app.post(
 	'/posts',
 	checkAuth,
+	(req, res) =>{
+		console.log(req)
+	},
 	createPostValidation,
 	handleErrors,
 	PostController.CreatePost
