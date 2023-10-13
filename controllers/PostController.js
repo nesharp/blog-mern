@@ -108,3 +108,19 @@ export const deletePost = async (req, res) => {
 		console.log(error)
 	}
 }
+export const getMyPosts = async (req, res) => {
+	try {
+		const { userId } = req
+		const posts = await PostModel.find({ user: userId }).sort({
+			createdAt: -1
+		}).populate('user', ['_id', 'avatarUrl', 'fullName', 'email'])
+		const filteredPosts = posts.map(post => {
+			const { __v, ...postData } = post._doc
+			return postData
+		})
+
+		return res.json(filteredPosts)
+	} catch (error) {
+		res.status(500).json({ message: 'Some test error' })
+	}
+}

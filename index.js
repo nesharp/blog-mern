@@ -71,6 +71,8 @@ app.post(
 	handleErrors,
 	PostController.CreatePost
 )
+// get my posts
+app.get('/posts/my', checkAuth, PostController.getMyPosts)
 //get posts
 app.get('/posts', PostController.getPosts)
 //get post by id
